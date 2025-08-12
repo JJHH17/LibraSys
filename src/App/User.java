@@ -29,8 +29,23 @@ public class User {
 		return this.firstName + " " + this.lastName;
 	}
 	
-	// TODO: Add a method that fetches a list of books
+	/** Allowing us to add a book to the user if the book is available */
 	public void addBook(Book book) {
-		books.add(book);
+		if (book.getAvailability()) {
+			this.books.add(book);
+			book.rentBook();
+		} else {
+			System.out.println("This book is currently unavailable");
+		}
+	}
+	
+	/** Allows the user to return a given book */
+	public void returnBook(Book book) {
+		if (this.books.contains(book)) {
+			this.books.remove(book);
+			book.returnBook();
+		} else {
+			System.out.println("You have not rented this book");
+		}
 	}
 }
