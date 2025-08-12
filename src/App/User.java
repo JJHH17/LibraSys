@@ -34,6 +34,7 @@ public class User {
 		if (book.getAvailability()) {
 			this.books.add(book);
 			book.rentBook();
+			System.out.println("Book added");
 		} else {
 			System.out.println("This book is currently unavailable");
 		}
