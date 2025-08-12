@@ -56,7 +56,21 @@ public class Book {
 		}
 	}
 	
+	/** Allows us to return a rented book */
+	public void returnBook() {
+		if (this.isAvailable == false) {
+			this.isAvailable = true;
+		} else {
+			System.out.println("This book is not currently hired");
+		}
+	}
+	
 	public int getNumOfRents() {
 		return this.numberOfRents;
+	}
+	
+	public String toString() {
+		return "Book Name: " + this.getName() + " Author: " + this.getAuthor() + " Number of Pages: " + this.getPages() + " Genre: " + this.getGenre() +
+				" Is Available? ";
 	}
 }
