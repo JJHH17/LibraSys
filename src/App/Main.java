@@ -8,6 +8,7 @@ public class Main {
 	private static ArrayList<User> users = new ArrayList<User>();
 	// Contains a list of books
 	private static ArrayList<Book> books = new ArrayList<Book>();
+	private static Scanner scanner = new Scanner(System.in);
 	
 	public static void main(String[] args) {
 		// Adding some template books for use
@@ -27,43 +28,72 @@ public class Main {
 			
 			switch (userInput) {
 				case 1:
-					String username = scanner.nextLine();
-					String password = scanner.nextLine();
-					String firstName = scanner.nextLine();
-					String lastName = scanner.nextLine();
-					User newUser = new User(username, password, firstName, lastName);
-					users.add(newUser); // Adds to arraylist (TEMPORARY, pre PostgreSQL)
-					System.out.println("Thank you for registering!");
+					createUser();
 					break;
 					
 				case 2:
-					String usernameCheck = scanner.nextLine();
-					String passwordCheck = scanner.nextLine();
-					// Checking if the arraylist contains the username and password
-					for (User user : users) {
-						if (user.getUserName().equals(usernameCheck) && user.getPassword().equals(passwordCheck)) {
-							// Adding a book
-							
-						}
-					}
-					System.out.println("Username doesn't exist");
+					credentialCheck();
 					break;
 					
 				case 3:
 					active = false;
+					System.out.println("Exiting");
 					break;
 			}
 		}
 	}
+	
+	/** Allowing user to create a profile */
+	public static void createUser() {
+		System.out.println("Enter a username");
+		String username = scanner.nextLine();
+		System.out.println("Enter a password");
+		String password = scanner.nextLine();
+		System.out.println("Enter your first name");
+		String firstName = scanner.nextLine();
+		System.out.println("Enter your last name");
+		String lastName = scanner.nextLine();
 		
-	/** Allowing us to add a book if user logs in */
-	public void addBookCLI(Book book, User user) {
-		if (books.contains(book)) {
-			if (users.contains(user)) {
-				user.addBook(book);
-			}
-		} else {
-			System.out.println("This book is currently unavailable");
+		User newUser = new User(username, password, firstName, lastName);
+		users.add(newUser); // Adds to arraylist (TEMPORARY UNTIL WE ADD POSTGRESQL)
+		System.out.println("Thank you for registering!");
+	}
+	
+	/** Used for authentication check */
+	public static void credentialCheck() {
+		System.out.println("Enter your username");
+		String username = scanner.nextLine();
+		System.out.println("Enter your password");
+		String password = scanner.nextLine();
+		
+		// Checking if our arraylist contains the above credentials
+		for (User user : users) {
+			if (user.getUserName().equals(username) && user.getPassword().equals(password)) {
+				String bookNameInput = addBookCLI();
+				bookAvailabilityChecker(bookNameInput, user);
+				return;
+			} 
 		}
+		System.out.println("Credentials not found");
+	}
+	
+	/** Allows us to input a given book */
+	public static String addBookCLI() {
+		System.out.println("Enter a book name");
+		String bookName = scanner.nextLine();
+		return bookName;
+	}
+	
+		
+	/** Allows us to check whether book is available/exists */
+	public static void bookAvailabilityChecker(String bookName, User user) {
+		// Checking if a given book name exists
+		for (Book book : books) {
+			if (book.getName().equalsIgnoreCase(bookName)) {
+				user.addBook(book);
+				return;
+			}
+		}
+		System.out.println("Book is unavailable");
 	}
 }
